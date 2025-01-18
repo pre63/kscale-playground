@@ -17,13 +17,20 @@ from jax import numpy as jp
 from ml_collections import config_dict
 from zbot import joystick as zbot_joystick
 from zbot import randomize as zbot_randomize
+from zbot import zbot_constants
 
 from mujoco_playground import wrapper
 from mujoco_playground._src.gait import draw_joystick_command
 
 
 class ZBotRunner:
-    def __init__(self, args, logger):
+    def __init__(self, args: argparse.Namespace, logger: logging.Logger) -> None:
+        """Initialize the ZBotRunner class.
+
+        Args:
+            args (argparse.Namespace): Command line arguments.
+            logger (logging.Logger): Logger instance.
+        """
         self.logger = logger
         self.args = args
         self.env_name = args.env
@@ -33,14 +40,14 @@ class ZBotRunner:
         self.times = [datetime.now()]
         self.base_body = "Z-BOT2_MASTER-BODY-SKELETON"
         
-    def setup_environment(self):
+    def setup_environment(self) -> None:
         """Initialize environment configuration"""
         self.env_config = zbot_joystick.default_config()
         self.env = zbot_joystick.Joystick(task=self.args.task)
         self.eval_env = zbot_joystick.Joystick(task=self.args.task)
         self.randomizer = zbot_randomize.domain_randomize
         
-    def setup_training_config(self):
+    def setup_training_config(self) -> None:
         """Setup PPO training configuration"""
         self.rl_config = config_dict.create(
             num_timesteps=5 if self.args.debug else 150_000_000,
@@ -70,8 +77,14 @@ class ZBotRunner:
         )
         self.logger.info(f"RL config: {self.rl_config}")
 
-    def save_video(self, frames, fps, filename='output.mp4'):
-        """Save video frames using OpenCV"""
+    def save_video(self, frames: list[np.ndarray], fps: float, filename: str = 'output.mp4') -> None:
+        """Save video frames using OpenCV
+        
+        Args:
+            frames (list[np.ndarray]): List of frames to save.
+            fps (float): Frames per second.
+            filename (str): Output filename.
+        """
         height, width, _ = frames[0].shape
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(filename, fourcc, fps, (width, height))
@@ -81,8 +94,13 @@ class ZBotRunner:
             out.write(frame_bgr)
         out.release()
 
-    def progress_callback(self, num_steps, metrics):
-        """Callback function for training progress"""
+    def progress_callback(self, num_steps: int, metrics: dict) -> None:
+        """Callback function for training progress
+        
+        Args:
+            num_steps (int): Number of steps taken.
+            metrics (dict): Metrics from the training process.
+        """
         plt.figure()
         self.times.append(datetime.now())
         self.x_data.append(num_steps)
@@ -96,7 +114,7 @@ class ZBotRunner:
         plt.savefig('plot.png')
         plt.close()
 
-    def train(self):
+    def train(self) -> None:
         """Execute training process"""
         ppo_training_params = dict(self.rl_config)
         if "network_factory" in self.rl_config:
@@ -127,7 +145,7 @@ class ZBotRunner:
         if self.args.save_model:
             self.save_model()
 
-    def save_model(self):
+    def save_model(self) -> None:
         """Save model parameters"""
         save_dir = Path("checkpoints")
         save_dir.mkdir(exist_ok=True)
@@ -136,7 +154,7 @@ class ZBotRunner:
             pickle.dump(self.params, f)
         self.logger.info(f"Model saved to: {model_path}")
 
-    def load_model(self):
+    def load_model(self) -> None:
         """Load model parameters"""
         model_path = Path("checkpoints") / f"{self.env_name}_params.pkl"
         with open(model_path, "rb") as f:
@@ -144,14 +162,23 @@ class ZBotRunner:
         self.logger.info("Model loaded successfully")
 
     @functools.partial(jax.jit, static_argnums=(0,))
-    def run_step(self, state, rng, inference_fn):
-        """Execute a single environment step with JAX transformation"""
+    def run_step(
+        self, state: jax.Array, rng: jax.Array, 
+        inference_fn: any
+    ) -> tuple[jax.Array, jax.Array]:
+        """Execute a single environment step with JAX transformation
+        
+        Args:
+            state (jax.Array): Current state.
+            rng (jax.Array): Random number generator.
+            inference_fn (any): Inference function.
+        """
         act_rng, next_rng = jax.random.split(rng)
         ctrl, _ = inference_fn(state.obs, act_rng)
         next_state = self.eval_env.step(state, ctrl)
         return next_state, next_rng
 
-    def evaluate(self):
+    def evaluate(self) -> None:
         """Run evaluation episodes"""
         eval_env = zbot_joystick.Joystick(task=self.args.task)
         jit_reset = jax.jit(eval_env.reset)
@@ -186,7 +213,7 @@ class ZBotRunner:
                 rollout.append(state)
 
                 # Get robot position and orientation
-                xyz = np.array(state.data.xpos[self.eval_env.mj_model.body("Z-BOT2_MASTER-BODY-SKELETON").id])
+                xyz = np.array(state.data.xpos[self.eval_env.mj_model.body(zbot_constants.ROOT_BODY).id])
                 xyz += np.array([0, 0.0, 0])
                 x_axis = state.data.xmat[self.eval_env._torso_body_id, 0]
                 yaw = -np.arctan2(x_axis[1], x_axis[0])
@@ -203,8 +230,16 @@ class ZBotRunner:
             
             self.render_episode(rollout, modify_scene_fns, episode)
 
-    def render_episode(self, rollout, modify_scene_fns, episode_num):
-        """Render and save episode video"""
+    def render_episode(
+        self, rollout: list[jax.Array], modify_scene_fns: list[callable], episode_num: int
+    ) -> None:
+        """Render and save episode video
+        
+        Args:
+            rollout (list[jax.Array]): Rollout data.
+            modify_scene_fns (list[callable]): Modify scene functions.
+            episode_num (int): Episode number.
+        """
         render_every = 1
         fps = 1.0 / self.eval_env.dt / render_every
         self.logger.info(f"fps: {fps}")

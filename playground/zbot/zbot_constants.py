@@ -20,7 +20,6 @@ def task_to_xml(task_name: str) -> epath.Path:
       "rough_terrain": FEET_ONLY_ROUGH_TERRAIN_XML,
   }[task_name]
 
-
 FEET_SITES = [
     "l_foot",
     "r_foot",

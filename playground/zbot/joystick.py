@@ -15,6 +15,9 @@ from mujoco_playground._src import gait, mjx_env
 from mujoco_playground._src.collision import geoms_colliding
 
 
+NUM_JOINTS = 10
+
+
 def default_config() -> config_dict.ConfigDict:
   return config_dict.create(
       ctrl_dt=0.02,
@@ -28,9 +31,8 @@ def default_config() -> config_dict.ConfigDict:
           level=1.0,  # Set to 0.0 to disable noise.
           scales=config_dict.create(
               hip_pos=0.03,  # rad
-              kfe_pos=0.05,
-              ffe_pos=0.08,
-              faa_pos=0.03,
+              knee_pos=0.05,
+              ankle_pos=0.08,
               joint_vel=1.5,  # rad/s
               gravity=0.05,
               linvel=0.1,
@@ -109,15 +111,7 @@ class Joystick(zbot_base.ZbotEnv):
     self._soft_lowers = c - 0.5 * r * self._config.soft_joint_pos_limit_factor
     self._soft_uppers = c + 0.5 * r * self._config.soft_joint_pos_limit_factor
 
-    # pfb30
     hip_indices = []
-    # hip_joint_names = ["HR", "HAA"]
-    # for side in ["LL", "LR"]:
-    #   for joint_name in hip_joint_names:
-    #     hip_indices.append(
-    #         self._mj_model.joint(f"{side}_{joint_name}").qposadr - 7
-    #     )
-
     hip_indices.append(self._mj_model.joint(f"L_Hip_Roll").qposadr - 7)
     hip_indices.append(self._mj_model.joint(f"R_Hip_Roll").qposadr - 7)
     hip_indices.append(self._mj_model.joint(f"L_Hip_Yaw").qposadr - 7)
@@ -125,11 +119,9 @@ class Joystick(zbot_base.ZbotEnv):
     self._hip_indices = jp.array(hip_indices)
 
     knee_indices = []
-    # for side in ["LL", "LR"]:
     knee_indices.append(self._mj_model.joint(f"L_Knee_Pitch").qposadr - 7)
     knee_indices.append(self._mj_model.joint(f"R_Knee_Pitch").qposadr - 7)
     self._knee_indices = jp.array(knee_indices)
-
 
     # fmt: off
     # Test that
@@ -161,16 +153,13 @@ class Joystick(zbot_base.ZbotEnv):
       )
     self._foot_linvel_sensor_adr = jp.array(foot_linvel_sensor_adr)
 
-    # pfb30
-    qpos_noise_scale = np.zeros(10)
+    qpos_noise_scale = np.zeros(NUM_JOINTS)
     hip_ids = [0, 1, 2, 5, 6, 7]
-    kfe_ids = [3, 8]
-    ffe_ids = [4, 9]
-    # faa_ids = [5, 11]
+    knee_ids = [3, 8]
+    ankle_ids = [4, 9]
     qpos_noise_scale[hip_ids] = self._config.noise_config.scales.hip_pos
-    qpos_noise_scale[kfe_ids] = self._config.noise_config.scales.kfe_pos
-    qpos_noise_scale[ffe_ids] = self._config.noise_config.scales.ffe_pos
-    # qpos_noise_scale[faa_ids] = self._config.noise_config.scales.faa_pos
+    qpos_noise_scale[knee_ids] = self._config.noise_config.scales.knee_pos
+    qpos_noise_scale[ankle_ids] = self._config.noise_config.scales.ankle_pos
     self._qpos_noise_scale = jp.array(qpos_noise_scale)
 
   def reset(self, rng: jax.Array) -> mjx_env.State:
@@ -190,7 +179,7 @@ class Joystick(zbot_base.ZbotEnv):
     # qpos[7:]=*U(0.5, 1.5)
     rng, key = jax.random.split(rng)
     qpos = qpos.at[7:].set(
-        qpos[7:] * jax.random.uniform(key, (10,), minval=0.5, maxval=1.5)
+        qpos[7:] * jax.random.uniform(key, (NUM_JOINTS,), minval=0.5, maxval=1.5)
     )
 
     # d(xyzrpy)=U(-0.5, 0.5)
@@ -392,9 +381,9 @@ class Joystick(zbot_base.ZbotEnv):
         noisy_gyro,  # 3
         noisy_gravity,  # 3
         info["command"],  # 3
-        noisy_joint_angles - self._default_pose,  # 10
-        noisy_joint_vel,  # 10
-        info["last_act"],  # 10
+        noisy_joint_angles - self._default_pose,  # NUM_JOINTS
+        noisy_joint_vel,  # NUM_JOINTS
+        info["last_act"],  # NUM_JOINTS
         phase,
     ])
 
