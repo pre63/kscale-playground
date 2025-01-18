@@ -64,14 +64,14 @@
       <inertial pos="-8.68153e-05 0.00960053 -0.0589276" quat="0.707354 -0.00845854 0.000660632 0.706809" mass="2.42118" diaginertia="0.0213218 0.0124974 0.0110819"/>
      
       <geom class="visual" type="mesh" rgba="0.494118 0.623529 0.74902 1" mesh="Z-BOT2_MASTER-BODY-SKELETON"/>
-      <geom class="visual" pos="0.055995 -0.00960999 -0.00952781" quat="1.64085e-08 1.64085e-08 -0.707107 -0.707107" type="mesh" rgba="0.364706 0.360784 0.74902 1" mesh="Z-BOT2-MASTER-SHOULDER2"/>
-      <geom class="visual" pos="0.07584 0.00919001 -0.0144278" quat="3.2817e-08 0.707107 -1.89469e-08 -0.707107" type="mesh" rgba="0.74902 0.498039 0.72549 1" mesh="3215_1Flange"/>
-      <geom class="visual" pos="0.0944404 -0.00960971 -0.107412" quat="0.5 0.5 -0.5 0.5" type="mesh" rgba="0.647059 0.647059 0.647059 1" mesh="R-ARM-MIRROR-1"/>
-      <geom class="visual" pos="0.106219 -0.00986943 -0.173617" quat="0.122788 -0.122788 0.696364 0.696364" type="mesh" rgba="0.627451 0.627451 0.627451 1" mesh="FINGER_1"/>
-      <geom class="visual" pos="-0.055995 -0.00960999 -0.00952781" quat="0.707107 -0.707107 -3.2817e-08 3.2817e-08" type="mesh" rgba="0.364706 0.360784 0.74902 1" mesh="Z-BOT2-MASTER-SHOULDER2_2"/>
-      <geom class="visual" pos="-0.07584 0.00919001 -0.0144278" quat="0.707107 -3.53553e-08 0.707107 4.92255e-08" type="mesh" rgba="0.74902 0.498039 0.72549 1" mesh="3215_1Flange_2"/>
-      <geom class="visual" pos="-0.0944403 -0.00960971 -0.107412" quat="0.707107 -0.707107 -4.48288e-08 3.9752e-08" type="mesh" rgba="0.627451 0.627451 0.627451 1" mesh="L-ARM-MIRROR_1"/>
-      <geom class="visual" pos="-0.106219 -0.00986943 -0.173617" quat="0.696364 -0.696364 0.122788 0.122788" type="mesh" rgba="0.627451 0.627451 0.627451 1" mesh="FINGER_1_2"/>
+      <geom class="visual" pos="0.055995 -0.00960999 -0.00952781" quat="1.64085e-08 1.64085e-08 -0.707107 -0.707107" type="mesh" rgba="0.95 0.93 0.88 1" mesh="Z-BOT2-MASTER-SHOULDER2"/>
+      <geom class="visual" pos="0.07584 0.00919001 -0.0144278" quat="3.2817e-08 0.707107 -1.89469e-08 -0.707107" type="mesh" rgba="0.95 0.93 0.88 1" mesh="3215_1Flange"/>
+      <geom class="visual" pos="0.0944404 -0.00960971 -0.107412" quat="0.5 0.5 -0.5 0.5" type="mesh" rgba="0.95 0.93 0.88 1" mesh="R-ARM-MIRROR-1"/>
+      <geom class="visual" pos="0.106219 -0.00986943 -0.173617" quat="0.122788 -0.122788 0.696364 0.696364" type="mesh" rgba="0.95 0.93 0.88 1" mesh="FINGER_1"/>
+      <geom class="visual" pos="-0.055995 -0.00960999 -0.00952781" quat="0.707107 -0.707107 -3.2817e-08 3.2817e-08" type="mesh" rgba="0.95 0.93 0.88 1" mesh="Z-BOT2-MASTER-SHOULDER2_2"/>
+      <geom class="visual" pos="-0.07584 0.00919001 -0.0144278" quat="0.707107 -3.53553e-08 0.707107 4.92255e-08" type="mesh" rgba="0.95 0.93 0.88 1" mesh="3215_1Flange_2"/>
+      <geom class="visual" pos="-0.0944403 -0.00960971 -0.107412" quat="0.707107 -0.707107 -4.48288e-08 3.9752e-08" type="mesh" rgba="0.95 0.93 0.88 1"  mesh="L-ARM-MIRROR_1"/>
+      <geom class="visual" pos="-0.106219 -0.00986943 -0.173617" quat="0.696364 -0.696364 0.122788 0.122788" type="mesh" rgba="0.95 0.93 0.88 1" mesh="FINGER_1_2"/>
       <geom class="collision" size="0.08 0.04 0.04" pos="0 0 -.04" type="box"/>
 
       <!-- collisions

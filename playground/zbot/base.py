@@ -2,15 +2,15 @@
 
 from typing import Any, Dict, Optional, Union
 
-from etils import epath
 import jax
 import jax.numpy as jp
-from ml_collections import config_dict
 import mujoco
+from etils import epath
+from ml_collections import config_dict
 from mujoco import mjx
+from zbot import zbot_constants as consts
 
 from mujoco_playground._src import mjx_env
-from zbot import zbot_constants as consts
 
 
 def get_assets() -> Dict[str, bytes]:

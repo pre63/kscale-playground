@@ -1,25 +1,25 @@
 """ Runner for ZBot """
 import argparse
-from datetime import datetime
-import logging
-from pathlib import Path
-import pickle
 import functools
+import logging
+import pickle
+from datetime import datetime
+from pathlib import Path
 
-import jax
-from jax import numpy as jp
-import numpy as np
 import cv2
+import jax
 import matplotlib.pyplot as plt
 import mujoco
-from ml_collections import config_dict
+import numpy as np
 from brax.training.agents.ppo import networks as ppo_networks
 from brax.training.agents.ppo import train as ppo
+from jax import numpy as jp
+from ml_collections import config_dict
+from zbot import joystick as zbot_joystick
+from zbot import randomize as zbot_randomize
 
 from mujoco_playground import wrapper
 from mujoco_playground._src.gait import draw_joystick_command
-from zbot import randomize as zbot_randomize
-from zbot import joystick as zbot_joystick
 
 
 class ZBotRunner:

@@ -1,7 +1,8 @@
 """Constants for ZBot."""
 
-from etils import epath
 import pathlib
+
+from etils import epath
 
 ROOT_PATH = pathlib.Path("playground/zbot")
 

@@ -4,16 +4,15 @@ from typing import Any, Dict, Optional, Union
 
 import jax
 import jax.numpy as jp
+import numpy as np
 from ml_collections import config_dict
 from mujoco import mjx
 from mujoco.mjx._src import math
-import numpy as np
-
-from mujoco_playground._src import gait
-from mujoco_playground._src import mjx_env
-from mujoco_playground._src.collision import geoms_colliding
 from zbot import base as zbot_base
 from zbot import zbot_constants as consts
+
+from mujoco_playground._src import gait, mjx_env
+from mujoco_playground._src.collision import geoms_colliding
 
 
 def default_config() -> config_dict.ConfigDict:

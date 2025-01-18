@@ -1,6 +1,5 @@
 mediapy
 opencv-python
 matplotlib
-jax[cuda12]
 playground
-jaxlib
+jax>=0.5.0
