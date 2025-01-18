@@ -27,7 +27,6 @@
           <geom size="0.027 0.0325" pos="0 9.61687e-05 0.0388277" type="cylinder"/>
         </default>
       </default>
-      <!--  pfb30 test this -->
       <site size="0.01" rgba="1 0 0 1" group="4"/>
     </default>
   </default>

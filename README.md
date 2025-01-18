@@ -1,9 +1,3 @@
-<p align="center">
-  <picture>
-    <img alt="K-Scale Open Source Robotics" src="https://media.kscale.dev/kscale-open-source-header.png" style="max-width: 100%;">
-  </picture>
-</p>
-
 <div align="center">
 
 [![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/kscalelabs/mujoco_playground/blob/main/LICENSE)
@@ -14,9 +8,6 @@
 [![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
 [![ruff](https://img.shields.io/badge/Linter-Ruff-red.svg?labelColor=gray)](https://github.com/charliermarsh/ruff)
 <br />
-[![Publish Python Package](https://github.com/kscalelabs/onshape/actions/workflows/publish.yml/badge.svg)](https://github.com/kscalelabs/onshape/actions/workflows/publish.yml)
-[![Python Checks](https://github.com/kscalelabs/onshape/actions/workflows/test.yml/badge.svg)](https://github.com/kscalelabs/onshape/actions/workflows/test.yml)
-
 </div>
 
 # K-Scale Mujoco Playground Library

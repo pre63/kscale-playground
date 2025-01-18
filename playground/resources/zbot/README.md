@@ -13,7 +13,9 @@ This package contains a simplified robot description (MJCF) of the [Zeroth Bot](
 </p>
 
 ## URDF → MJCF derivation steps
+```bash
 kscale robots urdf download zbot-v2
+```
 
 ## License
 This model is released under a [BSD-3-Clause License](LICENSE).
