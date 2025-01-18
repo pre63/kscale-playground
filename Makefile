@@ -72,3 +72,9 @@ mypy-daemon:
 test:
 	python -m pytest
 .PHONY: test
+
+train:
+	python playground/runner.py --env ZbotJoystickFlatTerrain --task flat_terrain --save-model --seed 42 --num-episodes 2 --episode-length 10 --x-vel 2.0 --y-vel 1.0 --yaw-vel 0.5
+
+eval:
+	python playground/runner.py --env ZbotJoystickFlatTerrain --task flat_terrain --load-model --seed 42 --num-episodes 1 --episode-length 10 --x-vel 1.5 --y-vel 0.5 --yaw-vel 0.2
